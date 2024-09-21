@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+.type-root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  letter-spacing: 0.1rem;
+  background: #cccccc;
+}
+.type-root__text {
+  color: #fff;
+  font-size: 4rem;
+  padding: 0.5rem;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  overflow: hidden;
+}
+.type-root__text span {
+  color: #dd7732;
+}
+
+.cursor {
+  width: 3px;
+  background: #fff;
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+    background-color: #ccc;
+  }
+  49% {
+    background-color: #ccc;
+  }
+  50% {
+    background-color: transparent;
+  }
+  99% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: #ccc;
+  }
+}
