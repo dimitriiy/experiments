@@ -9,14 +9,33 @@ import { TypingEffect } from './experiments/typing-effect';
 import { Anim } from './experiments/transition';
 import { MobxApp } from './experiments/mobx/case';
 import { createBrowserRouter } from 'react-router-dom';
+import { Signals } from './experiments/signals';
 
-export const PAGES = ['SWRApp', 'own-effector', 'own-zustand', 'own-vue', 'own-mobx', 'typing-effect', 'transition'];
+export const PAGES = [
+  'Signals',
+  'SWRApp',
+  'own-effector',
+  'own-zustand',
+  'own-vue',
+  'own-mobx',
+  'typing-effect',
+  'transition',
+];
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout>Main</Layout>,
   },
+  {
+    path: '/signals',
+    element: (
+      <Layout>
+        <Signals />
+      </Layout>
+    ),
+  },
+
   {
     path: '/SWRApp',
     element: (
