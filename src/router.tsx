@@ -24,83 +24,86 @@ export const PAGES = [
   'transition',
 ];
 
-export const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout>Main</Layout>,
-  },
+export const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Layout>Main</Layout>,
+    },
 
-  {
-    path: '/long-tasks',
-    element: (
-      <Layout>
-        <LongTasks />
-      </Layout>
-    ),
-  },
-  {
-    path: '/signals',
-    element: (
-      <Layout>
-        <Signals />
-      </Layout>
-    ),
-  },
+    {
+      path: '/long-tasks',
+      element: (
+        <Layout>
+          <LongTasks />
+        </Layout>
+      ),
+    },
+    {
+      path: '/signals',
+      element: (
+        <Layout>
+          <Signals />
+        </Layout>
+      ),
+    },
 
-  {
-    path: '/SWRApp',
-    element: (
-      <Layout>
-        <SWRApp />
-      </Layout>
-    ),
-  },
-  {
-    path: '/own-effector',
-    element: (
-      <Layout>
-        <Counter />
-      </Layout>
-    ),
-  },
-  {
-    path: '/own-zustand',
-    element: (
-      <Layout>
-        <Zustand />
-      </Layout>
-    ),
-  },
-  {
-    path: '/own-vue',
-    element: (
-      <Layout>
-        <VueDemo />
-      </Layout>
-    ),
-  },
-  {
-    path: '/own-mobx',
-    element: (
-      <Layout>
-        <MobxApp />
-      </Layout>
-    ),
-  },
-  {
-    path: '/typing-effect',
-    element: (
-      <Layout>
-        <TypingEffect />
-      </Layout>
-    ),
-  },
-  {
-    path: '/transition',
-    element: (
-      <Layout>
-        <Anim />
-      </Layout>
-    ),
-  },
-]);
+    {
+      path: '/SWRApp',
+      element: (
+        <Layout>
+          <SWRApp />
+        </Layout>
+      ),
+    },
+    {
+      path: '/own-effector',
+      element: (
+        <Layout>
+          <Counter />
+        </Layout>
+      ),
+    },
+    {
+      path: '/own-zustand',
+      element: (
+        <Layout>
+          <Zustand />
+        </Layout>
+      ),
+    },
+    {
+      path: '/own-vue',
+      element: (
+        <Layout>
+          <VueDemo />
+        </Layout>
+      ),
+    },
+    {
+      path: '/own-mobx',
+      element: (
+        <Layout>
+          <MobxApp />
+        </Layout>
+      ),
+    },
+    {
+      path: '/typing-effect',
+      element: (
+        <Layout>
+          <TypingEffect />
+        </Layout>
+      ),
+    },
+    {
+      path: '/transition',
+      element: (
+        <Layout>
+          <Anim />
+        </Layout>
+      ),
+    },
+  ],
+  { basename: '/experiments' }
+);
