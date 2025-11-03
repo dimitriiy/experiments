@@ -1,7 +1,20 @@
 import React from 'react';
 import { useSWR } from './useSWR';
 
-const fetcher = async () => new Promise<number[]>((res) => setTimeout(() => res([1, 2, 3]), 3000));
+const fetcher = async () => new Promise<number[]>((res) => setTimeout(() => res(console.log([1, 2, 3])), 3000));
+
+
+async function withTimeout<T>(fn:T, timeout:number) {
+
+
+  const prms = new Promise((res,rej) => {
+setTimeout(() =>rej('errror'),timeout)
+
+  })
+
+ }
+
+ withTimeout(fetcher,1000);
 
 export function SWRApp() {
   const { data, error } = useSWR('/api', fetcher);

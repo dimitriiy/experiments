@@ -18,7 +18,8 @@ export function useSWR<T = any, E = any>(
         setLoading(true);
         const processing = fetcher();
 
-        if ('then' in processing) {
+        console.log(processing)
+        if (processing !== null && typeof processing === 'object'  &&'then' in processing ) {
           processing.then((d) => setData(d)).catch((e) => setError(e));
         } else {
           setData(processing);

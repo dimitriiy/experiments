@@ -30,7 +30,7 @@ function animateText(options: Options) {
     let i = 0;
     let wordIndex = 0;
     function run() {
-      return new Promise((res) => {
+      return new Promise<void>((res) => {
         let currentWord = textArray[wordIndex % textArray.length];
 
         if (state === stateOptions.Typing) {

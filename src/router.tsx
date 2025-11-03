@@ -10,8 +10,10 @@ import { Anim } from './experiments/transition';
 import { MobxApp } from './experiments/mobx/case';
 import { createBrowserRouter } from 'react-router-dom';
 import { Signals } from './experiments/signals';
+import { LongTasks } from './experiments/longTasks';
 
 export const PAGES = [
+  'long-tasks',
   'Signals',
   'SWRApp',
   'own-effector',
@@ -26,6 +28,15 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout>Main</Layout>,
+  },
+
+  {
+    path: '/long-tasks',
+    element: (
+      <Layout>
+        <LongTasks />
+      </Layout>
+    ),
   },
   {
     path: '/signals',

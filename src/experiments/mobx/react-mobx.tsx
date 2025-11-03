@@ -34,7 +34,7 @@ export function observer(Comp) {
       gloabalState.trackingDerivation = prev;
     };
 
-    console.log(rendering);
+
     return rendering;
   };
 }
