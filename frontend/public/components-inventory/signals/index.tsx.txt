@@ -1,0 +1,27 @@
+=== signals/index.tsx ===
+
+import React from 'react';
+import { createSignal } from './signals';
+import { useComputed, useStore } from './useSignals';
+
+const name = createSignal('rahul');
+const age = createSignal(10);
+
+export const Signals = () => {
+  const [nameValue, setName] = useStore(name);
+  const [ageValue, setAge] = useStore(age);
+
+  React.useEffect(() => {
+    setInterval(() => {
+      setAge(Math.floor(Math.random() * 100));
+    }, 3000);
+  }, []);
+
+  const title = useComputed(() => `${nameValue} is ${ageValue} years old`);
+
+  return (
+    <div>
+      <h2>{title ?? 'No title'}</h2>
+    </div>
+  );
+};

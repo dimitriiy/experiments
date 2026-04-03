@@ -1,0 +1,12 @@
+{
+  "name": "react-router",
+  "files": [
+    "browser-router.tsx",
+    "hash-router.tsx",
+    "index.tsx",
+    "lib.tsx",
+    "types.ts"
+  ],
+  "createdAt": "2025-12-14T21:37:02.540Z",
+  "fileCount": 5
+}

@@ -1,0 +1,38 @@
+=== di/lib.ts ===
+
+import 'reflect-metadata';
+
+export type Constructor<T> = new (...args: any[]) => T;
+
+class Container {
+  private readonly providers = new Map<Constructor<any>, any>(); // Stores singleton instances or factory functions
+
+  public static getInstance() {
+    return new Container();
+  }
+
+  register<T>(target: Constructor<T>) {
+    this.providers.set(target, target);
+  }
+
+  resolve<T>(target: Constructor<T>): T {
+    if (this.providers.has(target) && this.providers.get(target) instanceof target) {
+      return this.providers.get(target);
+    }
+
+    const paramTypes: Constructor<any>[] = Reflect.getMetadata('design:paramtypes', target) || [];
+
+    const deps = paramTypes.map((c) => this.resolve(c));
+    this.providers.set(target, new target(...deps));
+
+    return this.providers.get(target);
+  }
+}
+
+const Injectable = (): ClassDecorator => {
+  return (func: Function) => {};
+};
+
+// Export a convenience instance
+const container = Container.getInstance();
+export { container, Injectable };

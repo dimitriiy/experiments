@@ -1,0 +1,48 @@
+// services.ts
+import { container, Injectable } from './lib'; // Assuming container.ts is in the same directory
+
+@Injectable()
+class LoggerService {
+  log(message: string): void {
+    console.log(`[Logger]: ${message}`);
+  }
+}
+
+@Injectable()
+class DataService {
+  constructor(private logger: LoggerService) {} // LoggerService is a dependency
+
+  getData(): string {
+    this.logger.log('Fetching data...');
+    return 'Hello from DataService!';
+  }
+}
+
+@Injectable()
+class ApplicationService {
+  constructor(
+    private dataService: DataService,
+    private logger: LoggerService
+  ) {} // DataService and LoggerService are dependencies
+
+  run(): void {
+    this.logger.log('Application starting...');
+    const data = this.dataService.getData();
+    this.logger.log(`Received data: ${data}`);
+    this.logger.log('Application finished.');
+  }
+}
+
+container.register(LoggerService);
+container.register(DataService);
+container.register(ApplicationService);
+
+// Resolve the top-level application service
+const app = container.resolve(ApplicationService);
+console.log({ app });
+app.run();
+
+// Verify singleton behavior
+const anotherLogger = container.resolve(LoggerService);
+const firstLogger = container.resolve(LoggerService);
+console.log('Are loggers the same instance?', anotherLogger === firstLogger); // Should be true

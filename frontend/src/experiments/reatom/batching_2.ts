@@ -1,0 +1,75 @@
+class Store {
+  #value;
+  #subscribers = [];
+  #isBatching = false;
+
+  constructor(initialValue) {
+    this.#value = initialValue;
+
+    BatchManager.register(this);
+  }
+
+  get() {
+    return this.#value;
+  }
+
+  set(newValue) {
+    this.#value = newValue;
+
+    if (BatchManager.isBatching) return;
+
+    this.#notifySubscribers();
+  }
+
+  subscribe(callback) {
+    this.#subscribers.push(callback);
+  }
+
+  #notifySubscribers() {
+    this.#subscribers.forEach((callback) => callback(this.#value));
+  }
+}
+
+class BatchManager {
+  static stores = [];
+  static isBatching = false;
+
+  static register(store) {
+    this.stores.push(store);
+  }
+
+  static startBatching() {
+    BatchManager.isBatching = true;
+  }
+
+  static endBatching() {
+    BatchManager.isBatching = false;
+  }
+
+  static notifySubscribers() {
+    BatchManager.stores.forEach((store) => store.notifySubscribers());
+  }
+}
+
+function action(fn) {
+  BatchManager.startBatching();
+
+  fn();
+
+  BatchManager.endBatching();
+}
+
+const counterStore = new Store(0);
+const nameStore = new Store('');
+
+let effects = 0;
+
+counterStore.subscribe(() => effects++);
+nameStore.subscribe(() => effects++);
+
+action(() => {
+  counterStore.set(1);
+  nameStore.set('Alice');
+});
+
+console.log(effects); // 2 (каждый store уведомил ОДИН раз)

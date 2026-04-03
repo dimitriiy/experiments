@@ -1,0 +1,28 @@
+=== chrome-extension/manifest.json ===
+
+{
+  "name": "Dimedrol team",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "optional_permissions": ["<all_urls>"],
+
+  "background": {
+    "service_worker": "src/background.ts"
+  },
+  "options_page": "src/options.html",
+  "action": {
+    "default_popup": "src/options.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' http://localhost:*; object-src 'self'"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/options.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

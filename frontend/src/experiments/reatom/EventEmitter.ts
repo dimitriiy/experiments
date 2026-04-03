@@ -1,0 +1,23 @@
+export type Subscriber = (data: unknown) => void;
+
+class EventEmitter {
+  listeners = new Map<string, Set<Subscriber>>();
+
+  on(event: string, callback: Subscriber) {
+    if (!this.listeners.get(event)) {
+      this.listeners.set(event, new Set());
+    }
+
+    this.listeners.get(event)?.add(callback);
+
+    return this;
+  }
+
+  of(event: string, callback: Subscriber) {
+    this.listeners.get(event)?.delete(callback);
+  }
+
+  emit(event: string, data: unknown) {
+    this.listeners.get(event)?.forEach((cb) => cb(data));
+  }
+}

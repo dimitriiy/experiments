@@ -1,0 +1,12 @@
+{
+  "name": "chrome-extension",
+  "files": [
+    ".DS_Store",
+    "manifest.json",
+    "package.json",
+    "vite.config.ts",
+    "yarn.lock"
+  ],
+  "createdAt": "2026-04-03T09:26:28.316Z",
+  "fileCount": 5
+}

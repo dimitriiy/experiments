@@ -1,0 +1,10 @@
+{
+  "name": "mobx",
+  "files": [
+    "case.tsx",
+    "mobx.ts",
+    "react-mobx.tsx"
+  ],
+  "createdAt": "2026-04-03T09:26:28.322Z",
+  "fileCount": 3
+}

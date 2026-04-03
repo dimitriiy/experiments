@@ -1,0 +1,102 @@
+=== longTasks/index.tsx ===
+
+import React, { useState } from 'react';
+
+function waitSync(milliseconds: number) {
+  const start = Date.now();
+  while (Date.now() - start < milliseconds) {}
+}
+
+function FreezeMainTread() {
+  const [clickCount, setClickCount] = useState(0);
+  const [loopCount, setLoopCount] = useState(0);
+
+  function start() {
+    const items = new Array(100).fill(null);
+
+    for (const i of items) {
+      setLoopCount((p) => p + 1);
+      waitSync(50);
+    }
+  }
+
+  return (
+    <div>
+      <button id="start" onClick={start}>
+        start
+      </button>
+      <button id="button" onClick={() => setClickCount((prev) => prev + 1)}>
+        count
+      </button>
+      <div>
+        Click count: <span id="clickCount">{clickCount}</span>
+      </div>
+      <div>
+        Loop count: <span id="loopCount">{loopCount}</span>
+      </div>
+    </div>
+  );
+}
+
+function WorkerFunc() {
+  const [clickCount, setClickCount] = useState(0);
+  const [loopCount, setLoopCount] = useState(0);
+
+  async function start() {
+    const webWorkerScript = `
+
+     function waitSync(milliseconds) {
+      const start = Date.now();
+      while (Date.now() - start < milliseconds) {}
+    }
+
+    self.onmessage = function () {
+      waitSync(50);
+      self.postMessage('Process completed');
+    };
+
+    `;
+
+    const blob = new Blob([webWorkerScript], { type: 'text/javascript' });
+
+    const worker = new Worker(window.URL.createObjectURL(blob));
+
+    const items = new Array(100).fill(null);
+    let index = 0;
+    for (const i of items) {
+      worker.postMessage(items);
+
+      await new Promise((res) => {
+        worker.onmessage = () => {
+          console.log('index = ', index);
+          setLoopCount((p) => index);
+
+          res();
+        };
+      });
+
+      index++;
+    }
+  }
+
+  return (
+    <div>
+      <button id="start" onClick={start}>
+        start
+      </button>
+      <button id="button" onClick={() => setClickCount((prev) => prev + 1)}>
+        count
+      </button>
+      <div>
+        Click count: <span id="clickCount">{clickCount}</span>
+      </div>
+      <div>
+        Loop count: <span id="loopCount">{loopCount}</span>
+      </div>
+    </div>
+  );
+}
+
+export function LongTasks() {
+  return <WorkerFunc />;
+}

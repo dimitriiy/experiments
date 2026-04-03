@@ -1,0 +1,63 @@
+=== reatom/computed.ts ===
+
+class Store {
+  #value;
+  #subscribers = [];
+  #isBatching = false;
+
+  constructor(initialValue) {
+    this.#value = initialValue;
+  }
+
+  get() {
+    return this.#value;
+  }
+
+  set(newValue) {
+    this.#value = newValue;
+
+    if (this.#isBatching) return;
+
+    this.#notifySubscribers();
+  }
+
+  subscribe(callback) {
+    this.#subscribers.push(callback);
+  }
+
+  #notifySubscribers() {
+    this.#subscribers.forEach((callback) => callback(this.#value));
+  }
+}
+
+function action(fn) {
+  fn();
+}
+
+class Computed extends Store {
+  constructor(actionFn: () => void) {
+    super(actionFn());
+    this.action = actionFn;
+  }
+}
+
+const price = new Store(100);
+const quantity = new Store(13);
+
+const total = new Computed(() => {
+  console.log('Вычисляю total...');
+  return price.get() * quantity.get();
+});
+
+let computedCount = 0;
+
+total.subscribe(() => computedCount++);
+
+action(() => {
+  price.set(200);
+  quantity.set(2);
+});
+
+// "Вычисляю total..." выведется один раз
+// computedCount = 1 (не 2!)
+console.log('log', total.get()); // 400

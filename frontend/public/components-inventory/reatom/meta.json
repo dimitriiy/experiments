@@ -1,0 +1,14 @@
+{
+  "name": "reatom",
+  "files": [
+    "Atom.ts",
+    "Context.ts",
+    "EventEmitter.ts",
+    "batching_1.ts",
+    "batching_2.ts",
+    "computed.ts",
+    "index.ts"
+  ],
+  "createdAt": "2026-04-03T09:26:28.336Z",
+  "fileCount": 7
+}

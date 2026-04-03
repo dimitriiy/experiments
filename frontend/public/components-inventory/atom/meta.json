@@ -1,0 +1,9 @@
+{
+  "name": "atom",
+  "files": [
+    "index.tsx",
+    "lib.ts"
+  ],
+  "createdAt": "2026-04-03T09:26:28.312Z",
+  "fileCount": 2
+}

@@ -1,0 +1,11 @@
+{
+  "name": "own-vue",
+  "files": [
+    "demo.tsx",
+    "reactive.ts",
+    "vue-2.ts",
+    "vue.tsx"
+  ],
+  "createdAt": "2026-04-03T09:26:28.326Z",
+  "fileCount": 4
+}

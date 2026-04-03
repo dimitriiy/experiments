@@ -1,0 +1,10 @@
+{
+  "name": "signals",
+  "files": [
+    "index.tsx",
+    "signals.ts",
+    "useSignals.tsx"
+  ],
+  "createdAt": "2026-04-03T09:26:28.339Z",
+  "fileCount": 3
+}

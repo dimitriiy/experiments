@@ -1,0 +1,55 @@
+=== reatom/batching_1.ts ===
+
+class Store {
+  #value;
+  #subscribers = [];
+  #isBatching = false;
+
+  constructor(initialValue) {
+    this.#value = initialValue;
+  }
+
+  get() {
+    return this.#value;
+  }
+
+  set(newValue) {
+    this.#value = newValue;
+
+    if (this.#isBatching) return;
+
+    this.#notifySubscribers();
+  }
+
+  subscribe(callback) {
+    this.#subscribers.push(callback);
+  }
+
+  #notifySubscribers() {
+    this.#subscribers.forEach((callback) => callback(this.#value));
+  }
+
+  batch(action) {
+    this.#isBatching = true;
+
+    action();
+
+    this.#isBatching = false;
+
+    this.#notifySubscribers();
+  }
+}
+
+const store = new Store(0);
+let callCount = 0;
+
+store.subscribe(() => callCount++);
+
+store.batch(() => {
+  store.set(1);
+  store.set(2);
+  store.set(3);
+});
+
+console.log(callCount); // 1 (не 3!)
+console.log(store.get()); // 3

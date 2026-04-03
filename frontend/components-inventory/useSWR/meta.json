@@ -1,0 +1,9 @@
+{
+  "name": "useSWR",
+  "files": [
+    "example.tsx",
+    "useSWR.tsx"
+  ],
+  "createdAt": "2025-12-14T21:37:02.550Z",
+  "fileCount": 2
+}

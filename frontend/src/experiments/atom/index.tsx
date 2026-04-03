@@ -1,0 +1,100 @@
+import React from "react";
+import { createAtom, useAtom, useAtomValue } from "./lib";
+import { CodeViewer } from "@/components/CodeViewer";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+const priceAtom = createAtom(15);
+
+const discountAtom = createAtom(10);
+
+const promoAtom = createAtom(100000);
+
+const discountedPriceAtom = createAtom((get) => {
+  return (get(priceAtom) / 100) * get(discountAtom);
+});
+
+// let condition = true;
+// const derivedAtom = createAtom((get) => {
+//   if (condition) {
+//     return get(priceAtom) + get(discountAtom); // Зависит от a и b
+//   } else {
+//     return get(discountAtom) + get(promoAtom); // Зависит от b и c
+//   }
+// });
+
+export const AtomApp = () => {
+  const [condition, setCondition] = React.useState(true);
+  const [price, setPrice] = useAtom(priceAtom);
+  const derivedAtom = React.useMemo(
+    () =>
+      createAtom((get) => {
+        if (condition) {
+          return get(priceAtom) / get(discountAtom); // Зависит от a и b
+        } else {
+          return get(discountAtom) - get(promoAtom); // Зависит от b и c
+        }
+      }),
+    [condition, price],
+  );
+
+  console.log(derivedAtom);
+  const discountedPrice = useAtomValue(derivedAtom);
+
+  return (
+    <div className="">
+      <h1>Atom state manager</h1>
+
+      <div className=" my-10">
+        <Button onClick={() => setCondition((p) => !p)}>
+          {condition ? 1 : 0}
+        </Button>
+
+        <Input type="number" onChange={(e) => setPrice(+e.target.value)} />
+
+        <h2>{`Price = ${price ?? 0}`}</h2>
+        <h2>{`DiscountedPrice = ${discountedPrice ?? 0}`}</h2>
+      </div>
+
+      <Code />
+    </div>
+  );
+};
+
+export const Code = () => {
+  const [files, setFiles] = React.useState([]);
+
+  React.useEffect(() => {
+    import("./index");
+
+    async function loadFiles({ component }) {
+      const response = await fetch(
+        `/experiments/components-inventory/${component}/meta.json`,
+      );
+      const meta = await response.json();
+
+      const rawFiles = await Promise.all(
+        meta.files.map((file) =>
+          fetch(
+            `/experiments/components-inventory/${component}/${file}.txt`,
+          ).then((f) => f.text()),
+        ),
+      );
+      console.log({ rawFiles });
+
+      setFiles(
+        meta.files.map((f, i) => ({
+          file: f,
+          content: rawFiles[i],
+          language: "tsx",
+          filename: f,
+          code: rawFiles[i],
+        })),
+      );
+    }
+
+    loadFiles({ component: "atom" });
+  }, []);
+
+  return <div className="">{files?.length && <CodeViewer data={files} />}</div>;
+};

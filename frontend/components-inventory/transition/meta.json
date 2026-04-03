@@ -1,0 +1,9 @@
+{
+  "name": "transition",
+  "files": [
+    "index.tsx",
+    "styles.module.css"
+  ],
+  "createdAt": "2025-12-14T21:37:02.548Z",
+  "fileCount": 2
+}

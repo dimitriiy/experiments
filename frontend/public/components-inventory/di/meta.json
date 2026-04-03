@@ -1,0 +1,11 @@
+{
+  "name": "di",
+  "files": [
+    "di.test.ts",
+    "index.tsx",
+    "lib.ts",
+    "sandbox.tsx"
+  ],
+  "createdAt": "2026-04-03T09:26:28.319Z",
+  "fileCount": 4
+}

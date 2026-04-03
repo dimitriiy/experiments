@@ -1,0 +1,91 @@
+=== storage/lib.ts ===
+
+type SnapshotTransformer<TState, TSnapshot = TState> = (
+  state: TState
+) => TSnapshot;
+type SnapshotHydrator<TState, TSnapshot = TState> = (
+  snapshot: TSnapshot
+) => TState;
+
+interface StorageOptions<TState, TSnapshot> {
+  key: string;
+  version: number;
+  /** Transform state before saving */
+  toSnapshot?: SnapshotTransformer<TState, TSnapshot>;
+  /** Transform snapshot after loading */
+  fromSnapshot?: SnapshotHydrator<TState, TSnapshot>;
+
+  migration?: MigrationFunction<TSnapshot>;
+  time?: number;
+}
+
+type MigrationFunction<T = unknown> = (
+  record: StorageRecord<T>,
+  currentVersion: number
+) => T;
+
+type StorageRecord<T = unknown> = {
+  version: number;
+  timestamp: number;
+  snapshot: T;
+};
+
+export function withLocalStorage<TState, TSnapshot = TState>(
+  options: StorageOptions<TState, TSnapshot>
+) {
+  const {
+    key = "app-state",
+    version = 1,
+    migration = null,
+    time = null, // TTL в миллисекундах
+    toSnapshot = (state) => state,
+    fromSnapshot = (snapshot) => snapshot,
+  } = options;
+
+  const save = (data: TState) => {
+    const snapshot = toSnapshot(data);
+    const record = {
+      version,
+      snapshot,
+      timestamp: Date.now(),
+    } as StorageRecord<TState>;
+
+    localStorage.setItem(key, JSON.stringify(record));
+  };
+
+  const load = () => {
+    try {
+      const stored = localStorage.getItem(key);
+
+      if (!stored) {
+        return null;
+      }
+
+      const record: StorageRecord<TState> = JSON.parse(stored);
+
+      if (time && record.timestamp) {
+        const age = Date.now() - record.timestamp;
+
+        if (age > time) {
+          localStorage.removeItem(key);
+
+          return null;
+        }
+      }
+
+      let data = record.snapshot;
+
+      if (record.version !== version && migration) {
+        data = migration(record, record.version);
+      }
+
+      return fromSnapshot(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return {
+    save,
+    load,
+  };
+}

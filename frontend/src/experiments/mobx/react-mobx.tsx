@@ -1,0 +1,35 @@
+import React, { useLayoutEffect } from "react";
+import { gloabalState } from "./mobx";
+
+const useForceUpdate = () => {
+  const [_, setState] = React.useState({});
+  return React.useCallback(() => setState({}), []);
+};
+
+export function observer(Comp) {
+  return (props) => {
+    const reactionTrackingRef = React.useRef(null);
+    const forceUpdate = useForceUpdate();
+
+    if (!reactionTrackingRef.current) {
+      reactionTrackingRef.current = () => {
+        const prev = gloabalState.trackingDerivation;
+        gloabalState.trackingDerivation = forceUpdate;
+        gloabalState.trackingDerivation();
+        gloabalState.trackingDerivation = prev;
+      };
+    }
+
+    let rendering;
+
+    const prev = gloabalState.trackingDerivation;
+    gloabalState.trackingDerivation = () => {
+      rendering = Comp(props);
+
+      gloabalState.trackingDerivation();
+      gloabalState.trackingDerivation = prev;
+    };
+
+    return rendering;
+  };
+}

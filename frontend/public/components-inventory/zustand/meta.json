@@ -1,0 +1,12 @@
+{
+  "name": "zustand",
+  "files": [
+    "create.ts",
+    "createStore.tsx",
+    "example.tsx",
+    "own-zustand.tsx",
+    "types.ts"
+  ],
+  "createdAt": "2026-04-03T09:26:28.346Z",
+  "fileCount": 5
+}

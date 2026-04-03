@@ -1,0 +1,52 @@
+=== atom/index.tsx ===
+
+import React from 'react';
+import { createAtom, useAtom, useAtomValue } from './lib';
+
+const priceAtom = createAtom(15);
+
+const discountAtom = createAtom(10);
+
+const promoAtom = createAtom(100000);
+
+const discountedPriceAtom = createAtom((get) => {
+  return (get(priceAtom) / 100) * get(discountAtom);
+});
+
+// let condition = true;
+// const derivedAtom = createAtom((get) => {
+//   if (condition) {
+//     return get(priceAtom) + get(discountAtom); // Зависит от a и b
+//   } else {
+//     return get(discountAtom) + get(promoAtom); // Зависит от b и c
+//   }
+// });
+
+export const AtomApp = () => {
+  const [condition, setCondition] = React.useState(true);
+  const [price, setPrice] = useAtom(priceAtom);
+  const derivedAtom = React.useMemo(
+    () =>
+      createAtom((get) => {
+        if (condition) {
+          return get(priceAtom) / get(discountAtom); // Зависит от a и b
+        } else {
+          return get(discountAtom) - get(promoAtom); // Зависит от b и c
+        }
+      }),
+    [condition, price]
+  );
+
+  console.log(derivedAtom);
+  const discountedPrice = useAtomValue(derivedAtom);
+
+  return (
+    <div>
+      <h1>Atom state manager</h1>
+      <button onClick={() => setCondition((p) => !p)}>{condition ? 1 : 0}</button>
+      <input type="number" onChange={(e) => setPrice(+e.target.value)} />
+      <h2>{`Price = ${price ?? 0}`}</h2>
+      <h2>{`DiscountedPrice = ${discountedPrice ?? 0}`}</h2>
+    </div>
+  );
+};

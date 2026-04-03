@@ -1,0 +1,10 @@
+=== di/sandbox.tsx ===
+
+import React from "react";
+
+export const DISandbox = () => {
+  React.useEffect(() => {
+    import("./index");
+  }, []);
+  return <div>Console.log</div>;
+};
