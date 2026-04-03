@@ -124,7 +124,7 @@ export function useMySuspenseQuery<T>(opts: {
     const cleanup = queryClient.addSubscriber(keyRef, forceRender);
 
     return () => cleanup();
-  }, [queryClient, keyRef]);
+  }, [queryClient, keyRef, forceRender]);
 
   if (!queryClient.has(keyRef)) {
     queryClient.set(keyRef, wrapPromise(opts.queryFn()));

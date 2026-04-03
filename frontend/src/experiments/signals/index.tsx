@@ -1,8 +1,10 @@
-import React from 'react';
-import { createSignal } from './signals';
-import { useComputed, useStore } from './useSignals';
+import React from "react";
+import { createSignal } from "./signals";
+import { useComputed, useStore } from "./useSignals";
+import { CodeBlock } from "@/components/ui/shadcn-io/code-block";
+import { CodeLoader } from "@/components/CodeLoader";
 
-const name = createSignal('rahul');
+const name = createSignal("rahul");
 const age = createSignal(10);
 
 export const Signals = () => {
@@ -19,7 +21,9 @@ export const Signals = () => {
 
   return (
     <div>
-      <h2>{title ?? 'No title'}</h2>
+      <h2>{title ?? "No title"}</h2>
+
+      <CodeLoader component="signals" />
     </div>
   );
 };

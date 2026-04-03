@@ -1,5 +1,5 @@
-import React from 'react';
-import './styles.css';
+import React from "react";
+import "./styles.css";
 
 type Options = {
   element: HTMLElement;
@@ -10,7 +10,13 @@ type Options = {
   delay?: number;
 };
 function animateText(options: Options) {
-  const { element, typeSpeed = 500, eraseSpeed = 200, textArray, delay = 1000 } = options;
+  const {
+    element,
+    typeSpeed = 500,
+    eraseSpeed = 200,
+    textArray,
+    delay = 1000,
+  } = options;
   const dom = element;
 
   const type = (word: string) => {
@@ -22,10 +28,10 @@ function animateText(options: Options) {
 
   function animate(textArray: string[], index) {
     const stateOptions = {
-      Typing: 'Typing',
-      Erase: 'Erase',
-      Pause: 'Pause',
-    };
+      Typing: "Typing",
+      Erase: "Erase",
+      Pause: "Pause",
+    };cons
     let state = stateOptions.Typing;
     let i = 0;
     let wordIndex = 0;
@@ -66,7 +72,7 @@ function animateText(options: Options) {
       });
     }
     function invoke(fn) {
-      console.log('call');
+      console.log("call");
       return fn().then(() => invoke(fn));
     }
     invoke(run);
@@ -78,8 +84,8 @@ function animateText(options: Options) {
 export const TypingEffect = () => {
   React.useEffect(() => {
     animateText({
-      element: document.querySelector('.type-root__dynamic-text'),
-      textArray: ['hard', 'fun', 'a journey', 'LIFE'],
+      element: document.querySelector(".type-root__dynamic-text"),
+      textArray: ["hard", "fun", "a journey", "LIFE"],
     });
   }, []);
 

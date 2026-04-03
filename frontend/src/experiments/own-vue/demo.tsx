@@ -1,32 +1,33 @@
-import React from 'react';
-import { Observable, computed, create, El } from './vue-2';
+import React from "react";
+import { Observable, computed, create, El } from "./vue-2";
+import { CodeLoader } from "@/components/CodeLoader";
 
 function run() {
-  const inputValue = new Observable('text');
+  const inputValue = new Observable("text");
   const isDisabled = new Observable(false);
 
   const b = computed(() => {
     if (isDisabled.get()) {
-      return inputValue.get() + ' ' + inputValue.get();
+      return inputValue.get() + " " + inputValue.get();
     } else {
-      return 'c is turned off';
+      return "c is turned off";
     }
   });
 
-  const input = create('input').bind('value', inputValue);
-  const h1 = create('h1').bind('innerText', b);
-  const button = create('button')
-    .bind('innerText', () => {
+  const input = create("input").bind("value", inputValue);
+  const h1 = create("h1").bind("innerText", b);
+  const button = create("button")
+    .bind("innerText", () => {
       //   console.log("lolol", isDisabled.get() ? "On" : "Off");
 
-      return isDisabled.get() ? 'On' : 'Off';
+      return isDisabled.get() ? "On" : "Off";
     })
-    .on('click', () => {
+    .on("click", () => {
       isDisabled.set(!isDisabled.get());
     });
 
-  const root = document.getElementById('content');
-  root.innerHTML = '';
+  const root = document.getElementById("content");
+  root.innerHTML = "";
   const rootEl = new El(root);
   rootEl.append(input).append(h1).append(button);
 }
@@ -35,5 +36,10 @@ export function VueDemo() {
     run();
   }, []);
 
-  return <div id="content"></div>;
+  return (
+    <div>
+      <div id="content"></div>
+      <CodeLoader component="own-vue" />
+    </div>
+  );
 }
