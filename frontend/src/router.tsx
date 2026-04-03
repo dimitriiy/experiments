@@ -1,38 +1,40 @@
-import React from 'react';
+import React from "react";
 
-import { SWRApp } from './experiments/useSWR/example';
-import { Counter } from './experiments/own-effector/example';
-import { Zustand } from './experiments/zustand/example';
-import { VueDemo } from './experiments/own-vue/demo';
-import { TypingEffect } from './experiments/typing-effect';
-import { Anim } from './experiments/transition';
-import { MobxApp } from './experiments/mobx/case';
-import { createHashRouter } from 'react-router-dom';
-import { Signals } from './experiments/signals';
-import { LongTasks } from './experiments/longTasks';
-import { AtomApp } from './experiments/atom';
-import { MyRouterApp } from './experiments/react-router';
-import { Main } from './pages/main';
-import { DISandbox } from './experiments/di/sandbox';
+import { SWRApp } from "./experiments/useSWR/example";
+import { Counter } from "./experiments/own-effector/example";
+import { Zustand } from "./experiments/zustand/example";
+import { VueDemo } from "./experiments/own-vue/demo";
+import { TypingEffect } from "./experiments/typing-effect";
+import { Anim } from "./experiments/transition";
+import { MobxApp } from "./experiments/mobx/case";
+import { createHashRouter } from "react-router-dom";
+import { Signals } from "./experiments/signals";
+import { LongTasks } from "./experiments/longTasks";
+import { AtomApp } from "./experiments/atom";
+import { MyRouterApp } from "./experiments/react-router";
+import { Main } from "./pages/main";
+import { DISandbox } from "./experiments/di/sandbox";
+import { MyReactQueryApp } from "./experiments/react-query/sandbox";
 
 export const PAGES = [
-  'my-router',
-  'atom',
-  'long-tasks',
-  'Signals',
-  'SWRApp',
-  'own-effector',
-  'own-zustand',
-  'own-vue',
-  'own-mobx',
-  'typing-effect',
-  'transition',
+  "my-react-query",
+  "my-router",
+  "atom",
+  "long-tasks",
+  "Signals",
+  "SWRApp",
+  "own-effector",
+  "own-zustand",
+  "own-vue",
+  "own-mobx",
+  "typing-effect",
+  "transition",
 ];
 
 const Layout = ({ children }) => <div className="p-4">{children}</div>;
 export const router = createHashRouter([
   {
-    path: '/',
+    path: "/",
     element: (
       <Layout>
         <Main />
@@ -40,7 +42,15 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/my-di',
+    path: "/react-query",
+    element: (
+      <Layout>
+        <MyReactQueryApp />
+      </Layout>
+    ),
+  },
+  {
+    path: "/my-di",
     element: (
       <Layout>
         <DISandbox />
@@ -48,7 +58,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/my-router',
+    path: "/my-router",
     element: (
       <Layout>
         <MyRouterApp />
@@ -57,7 +67,7 @@ export const router = createHashRouter([
   },
 
   {
-    path: '/atom',
+    path: "/atom",
     element: (
       <Layout>
         <AtomApp />
@@ -66,7 +76,7 @@ export const router = createHashRouter([
   },
 
   {
-    path: '/long-tasks',
+    path: "/long-tasks",
     element: (
       <Layout>
         <LongTasks />
@@ -74,7 +84,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/signals',
+    path: "/signals",
     element: (
       <Layout>
         <Signals />
@@ -83,7 +93,7 @@ export const router = createHashRouter([
   },
 
   {
-    path: '/SWRApp',
+    path: "/SWRApp",
     element: (
       <Layout>
         <SWRApp />
@@ -91,7 +101,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/own-effector',
+    path: "/own-effector",
     element: (
       <Layout>
         <Counter />
@@ -99,7 +109,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/own-zustand',
+    path: "/own-zustand",
     element: (
       <Layout>
         <Zustand />
@@ -107,7 +117,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/own-vue',
+    path: "/own-vue",
     element: (
       <Layout>
         <VueDemo />
@@ -115,7 +125,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/own-mobx',
+    path: "/own-mobx",
     element: (
       <Layout>
         <MobxApp />
@@ -123,7 +133,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/typing-effect',
+    path: "/typing-effect",
     element: (
       <Layout>
         <TypingEffect />
@@ -131,7 +141,7 @@ export const router = createHashRouter([
     ),
   },
   {
-    path: '/transition',
+    path: "/transition",
     element: (
       <Layout>
         <Anim />

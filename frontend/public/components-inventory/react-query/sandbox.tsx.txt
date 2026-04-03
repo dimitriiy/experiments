@@ -1,0 +1,15 @@
+=== react-query/sandbox.tsx ===
+
+import { About } from "@/components/About";
+import { CodeLoader } from "@/components/CodeLoader";
+import { type Link, type Route, Home } from "lucide-react";
+import type { RouterProvider } from "react-router-dom";
+
+export function MyReactQueryApp() {
+  return (
+    <>
+      1
+      <CodeLoader component="react-query" />
+    </>
+  );
+}

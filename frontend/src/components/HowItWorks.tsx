@@ -11,6 +11,12 @@ interface FeatureProps {
 const features: FeatureProps[] = [
   {
     icon: <MedalIcon />,
+    title: "react-query",
+    description: "Implment suspense react query",
+  },
+
+  {
+    icon: <MedalIcon />,
     title: "my-di",
     description: "DI",
   },

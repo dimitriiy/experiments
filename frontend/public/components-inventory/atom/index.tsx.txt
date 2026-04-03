@@ -37,7 +37,7 @@ export const AtomApp = () => {
           return get(discountAtom) - get(promoAtom); // Зависит от b и c
         }
       }),
-    [condition, price]
+    [condition, price],
   );
 
   console.log(derivedAtom);
@@ -71,16 +71,16 @@ export const Code = () => {
 
     async function loadFiles({ component }) {
       const response = await fetch(
-        `/components-inventory/${component}/meta.json`
+        `/experiments/components-inventory/${component}/meta.json`,
       );
       const meta = await response.json();
 
       const rawFiles = await Promise.all(
         meta.files.map((file) =>
-          fetch(`/components-inventory/${component}/${file}.txt`).then((f) =>
-            f.text()
-          )
-        )
+          fetch(
+            `/experiments/components-inventory/${component}/${file}.txt`,
+          ).then((f) => f.text()),
+        ),
       );
       console.log({ rawFiles });
 
@@ -91,7 +91,7 @@ export const Code = () => {
           language: "tsx",
           filename: f,
           code: rawFiles[i],
-        }))
+        })),
       );
     }
 

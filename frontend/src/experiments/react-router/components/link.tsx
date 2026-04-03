@@ -1,4 +1,4 @@
-import { useRouter } from '../lib';
+import { useRouter } from "../lib";
 
 export interface LinkProps {
   to: string;
@@ -16,7 +16,7 @@ export const Link = ({ children, to }: React.PropsWithChildren<LinkProps>) => {
   const isActive = router.pathname === to;
 
   return (
-    <a href={to} onClick={onClick} style={{ color: isActive ? 'red' : 'black' }}>
+    <a href={to} onClick={onClick} style={{ color: isActive ? "red" : "" }}>
       {children}
     </a>
   );

@@ -1,0 +1,9 @@
+{
+  "name": "react-query",
+  "files": [
+    "lib.tsx",
+    "sandbox.tsx"
+  ],
+  "createdAt": "2026-04-03T10:16:20.247Z",
+  "fileCount": 2
+}

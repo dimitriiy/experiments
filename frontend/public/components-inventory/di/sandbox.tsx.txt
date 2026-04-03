@@ -10,13 +10,17 @@ export const DISandbox = () => {
     import("./index");
 
     async function loadFiles() {
-      const response = await fetch("/experiments/components-inventory/di/meta.json");
+      const response = await fetch(
+        "/experiments/components-inventory/di/meta.json",
+      );
       const meta = await response.json();
 
       const rawFiles = await Promise.all(
         meta.files.map((file) =>
-          fetch(`/components-inventory/di/${file}.txt`).then((f) => f.text())
-        )
+          fetch(`/experiments/components-inventory/di/${file}.txt`).then((f) =>
+            f.text(),
+          ),
+        ),
       );
       console.log({ rawFiles });
 
@@ -27,7 +31,7 @@ export const DISandbox = () => {
           language: "tsx",
           filename: f,
           code: rawFiles[i],
-        }))
+        })),
       );
     }
 

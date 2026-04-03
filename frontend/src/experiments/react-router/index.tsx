@@ -1,6 +1,8 @@
-import { RouterProvider } from './lib';
-import { Link } from './components/link';
-import { Route } from './components/route';
+import { RouterProvider } from "./lib";
+import { Link } from "./components/link";
+import { Route } from "./components/route";
+import { CodeLoader } from "@/components/CodeLoader";
+import type { useStore } from "../own-effector/own-effector";
 
 const Home = () => <h2>Home</h2>;
 const About = () => <h2>About</h2>;
@@ -8,9 +10,9 @@ const Topic = ({ topicId }) => <h3>{topicId}</h3>;
 
 const Topics = ({ match }) => {
   const items = [
-    { name: 'Rendering with React', slug: 'rendering' },
-    { name: 'Components', slug: 'components' },
-    { name: 'Props v. State', slug: 'props-v-state' },
+    { name: "Rendering with React", slug: "rendering" },
+    { name: "Components", slug: "components" },
+    { name: "Props v. State", slug: "props-v-state" },
   ];
 
   return (
@@ -18,39 +20,51 @@ const Topics = ({ match }) => {
       <h2>Topics</h2>
       <ul>
         {items.map(({ name, slug }) => (
-          <li key={name}>
+          <li key={name} style={{ color: "#fff" }}>
             <Link to={`${match.url}/${slug}`}>{name}</Link>
           </li>
         ))}
       </ul>
       {items.map(({ name, slug }) => (
-        <Route key={name} path={`${match.path}/${slug}`} render={() => <Topic topicId={name} />} />
+        <Route
+          key={name}
+          path={`${match.path}/${slug}`}
+          render={() => <Topic topicId={name} />}
+        />
       ))}
-      <Route exact path={match.url} render={() => <h3>Please select a topic.</h3>} />
+      <Route
+        exact
+        path={match.url}
+        render={() => <h3>Please select a topic.</h3>}
+      />
     </div>
   );
 };
 
 export function MyRouterApp() {
   return (
-    <RouterProvider>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-        <li>
-          <Link to="/topics">Topics</Link>
-        </li>
-      </ul>
+    <>
+      <RouterProvider>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/topics">Topics</Link>
+          </li>
+        </ul>
 
-      <hr />
+        <hr />
 
-      <Route exact path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/topics" component={Topics} />
-    </RouterProvider>
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/topics" component={Topics} />
+      </RouterProvider>
+
+      <CodeLoader component="react-router" />
+    </>
   );
 }

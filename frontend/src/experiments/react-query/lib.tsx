@@ -1,0 +1,145 @@
+import * as React from "react";
+
+type Resource<T> = {
+  read(): T;
+};
+
+function wrapPromise<T>(promise: Promise<T>): Resource<T> {
+  let status: "pending" | "success" | "error" = "pending";
+  let result: T;
+  let error: unknown;
+
+  const suspender = promise.then(
+    (data) => {
+      result = data;
+      status = "success";
+    },
+    (err) => {
+      error = err;
+      status = "error";
+    },
+  );
+
+  return {
+    read() {
+      if (status === "pending") throw suspender;
+      if (status === "error") throw error;
+      return result;
+    },
+  };
+}
+function useForceRender() {
+  const [_, setValue] = React.useState(0);
+
+  return React.useCallback(() => setValue((v) => v + 1), []);
+}
+
+type Store = Map<string, Resource<unknown>>;
+type Subscribers = Map<string, Set<() => void>>;
+
+export class QueryClient {
+  private store: Store = new Map();
+  private subscribers: Subscribers = new Map();
+
+  addSubscriber(key: string, listener: () => void) {
+    if (!this.subscribers.has(key)) {
+      this.subscribers.set(key, new Set());
+    }
+
+    this.subscribers.get(key)!.add(listener);
+
+    return () => {
+      this.subscribers.get(key)?.delete(listener);
+    };
+  }
+
+  notify(key: string) {
+    if (this.subscribers.has(key)) {
+      this.subscribers.get(key)?.forEach((cb) => cb());
+    }
+  }
+
+  get(key: string) {
+    return this.store.get(key);
+  }
+
+  set(key: string, value: Resource<unknown>) {
+    this.store.set(key, value);
+  }
+
+  has(key: string) {
+    return this.store.has(key);
+  }
+
+  delete(key: string) {
+    this.store.delete(key);
+  }
+}
+
+const QueryContext = React.createContext<QueryClient>({} as QueryClient);
+
+export function QueryClientProvider({
+  children,
+  queryClient,
+}: React.PropsWithChildren<{ queryClient: QueryClient }>) {
+  return (
+    <QueryContext.Provider value={queryClient}>
+      {children}
+    </QueryContext.Provider>
+  );
+}
+
+function useQueryClient() {
+  const ctx = React.useContext(QueryContext);
+
+  if (!ctx) {
+    throw new Error();
+  }
+
+  return ctx;
+}
+
+const serializeKey = (arr: string[]) => JSON.stringify(arr);
+
+type QueryReturn<T> = {
+  data: T;
+  refetch: () => void;
+  //   error: Error;
+  //   isFetching: boolean;
+  //   isLoading: boolean;
+};
+
+export function useMySuspenseQuery<T>(opts: {
+  queryKey: string[];
+  queryFn: () => Promise<T>;
+}): QueryReturn<T> {
+  const queryClient = useQueryClient();
+  const forceRender = useForceRender();
+  const keyRef = serializeKey(opts.queryKey);
+  const [isPending, startTransition] = React.useTransition();
+
+  React.useEffect(() => {
+    const cleanup = queryClient.addSubscriber(keyRef, forceRender);
+
+    return () => cleanup();
+  }, [queryClient, keyRef, forceRender]);
+
+  if (!queryClient.has(keyRef)) {
+    queryClient.set(keyRef, wrapPromise(opts.queryFn()));
+  }
+
+  const resource = queryClient.get(keyRef)! as Resource<T>;
+
+  const refetch = () => {
+    queryClient.delete(keyRef);
+
+    startTransition(() => {
+      queryClient.notify(keyRef);
+    });
+  };
+
+  return {
+    data: resource.read(),
+    refetch,
+  };
+}
